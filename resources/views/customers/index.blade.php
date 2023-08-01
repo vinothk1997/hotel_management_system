@@ -3,7 +3,7 @@
 @section('content')
     <p class="h3">Customers Details</p>
     @if (Session::get('user') && Session::get('user')['user_type'] == 'admin')
-        {{-- <a href="{{route('bookings.create')}}" class="btn btn-sm btn-primary my-2">Add New</a> --}}
+        <a href="{{route('customer.create')}}" class="btn btn-sm btn-primary my-2">Add New</a>
         <a href="" class="btn btn-sm btn-primary my-2" target="_blank">Generate Report</a>
     @endif
     <table id="example" class="display" style="width:100%">
@@ -32,17 +32,9 @@
                         <input type="hidden" name="id" value="{{$customer->id}}" />
                         <button type="submit" class="btn btn-sm btn-primary">View</a>
                     </form>
-                    <form class="d-inline" action="" method="POST">
-                        @csrf
-                        @method('POST')
+                    <form class="d-inline" action="{{route('customer.edit')}}" method="GET">
                         <input type="hidden" name="id" value="{{$customer->id}}" />
                         <button type="submit" class="btn btn-sm btn-secondary mx-2">Edit</a>
-                    </form>
-                    <form class="d-inline" action="" method="POST">
-                        @csrf
-                        <input type="hidden" name="id" value="{{$customer->id}}">
-                        @method('DELETE') <button type="submit" onclick="return deletedata()"
-                            class="btn btn-sm btn-danger">Delete</a>
                     </form>
                 </td>
             </tr>

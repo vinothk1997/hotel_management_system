@@ -40,6 +40,6 @@ class RoomTypeController extends Controller
     function show(Request $request){
         $room_type_id=$request->room_type_id;
         $rooms=Room::where('room_type_id',$room_type_id)->get();
-        return view('room-type.show',compact('rooms'));
+        return view('room-type.show',compact('rooms','room_type_id'));
     }
 }

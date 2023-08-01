@@ -20,7 +20,6 @@
                 <th>Departure Date</th>
                 <th>No of Adults</th>
                 <th>No of Childrens</th>
-                <th>Room Type</th>
                 <th>Total</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -28,38 +27,39 @@
         </thead>
         <tbody>
             @foreach ($bookings as $booking)
-                <tr>
-                    <td>room no</td>
-                    <td>{{ $booking->fname }}</td>
+                <tr class="text-danger">
+                    <td>
+                        {{ $booking->rooms->pluck('room_no')->implode(', ') }}
+                    </td>
                     <td>{{ $booking->booking_date }}</td>
                     <td>{{ $booking->check_in_date }}</td>
                     <td>{{ $booking->check_out_date }}</td>
                     <td>{{ $booking->no_of_adults }}</td>
                     <td>{{ $booking->no_of_childrens }}</td>
-                    <td>type</td>
-                    <td>tortal</td>
-                    <td>Status</td>
+                    <td>total</td>
+                    <td>{{ $booking->status }}</td>
 
-                    <td>
-                        <form class="d-inline me-1" action="{{ route('customer.show') }}" method="GET">
-                            @csrf
-                            @method('GET')
-                            <input type="hidden" name="id" value="{{ $booking->id }}" />
-                            <button type="submit" class="btn btn-sm btn-primary">View</a>
-                        </form>
-                        <form class="d-inline" action="" method="POST">
-                            @csrf
-                            @method('POST')
-                            <input type="hidden" name="id" value="{{ $customer->id }}" />
-                            <button type="submit" class="btn btn-sm btn-secondary mx-2">Edit</a>
-                        </form>
-                        <form class="d-inline" action="" method="POST">
-                            @csrf
-                            <input type="hidden" name="id" value="{{ $customer->id }}">
-                            @method('DELETE') <button type="submit" onclick="return deletedata()"
-                                class="btn btn-sm btn-danger">Delete</a>
-                        </form>
-                    </td>
+                    @if ($booking->status != 'Cancelled')
+                        <td>
+                            <form class="d-inline me-1" action="{{ route('customer.show') }}" method="GET">
+                                @csrf
+                                @method('GET')
+                                <input type="hidden" name="id" value="{{ $booking->id }}" />
+                                <button type="submit" class="btn btn-sm btn-primary">View</a>
+                            </form>
+                            <form class="d-inline" action="{{ route('booking.edit') }}" method="GET">
+
+                                <input type="hidden" name="id" value="{{ $booking->id }}" />
+                                <button type="submit" class="btn btn-sm btn-secondary mx-2">Edit</a>
+                            </form>
+                            <form class="d-inline" action="{{ route('booking.cancel') }}" method="GET">
+                                <input type="hidden" name="id" value="{{ $booking->id }}">
+                                <button type="submit" class="btn btn-sm btn-danger">Cancel</a>
+                            </form>
+                        </td>
+                        @else
+                        <td>No Action</td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

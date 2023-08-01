@@ -12,8 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory;
     protected $table='users';
-    protected $keyType="string";
-    protected $primaryKey="user_id";
+    protected $primaryKey = 'user_id';
     protected $fillable=['user_id','name','password','user_type	','attempt','status','verification_code'];
     public $timestamps=false;
 }

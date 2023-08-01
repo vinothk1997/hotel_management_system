@@ -2,11 +2,18 @@
 @section('title', 'room')
 @section('content')
     <div class="container mt-3">
-        <a href="{{ route('roomType.index') }}" class="btn btn-sm btn-secondary my-2">Back</a>
+        <div>
+            <form class="d-inline me-1" action="{{ route('roomType.show') }}" method="GET">
+                @csrf
+                @method('GET')
+                <input type="hidden" name="room_type_id" value="{{ $room_type_id }}" />
+                <button type="submit" class="btn btn-sm btn-secondary">Back</a>
+            </form>
+        </div>
         <div>
             <p class="h3">Create Room Type </p>
         </div>
-        <Form action="{{ route('roomType.store') }}" method="POST">
+        <Form action="{{ route('room.store') }}" method="POST">
             @csrf
             <div class="row">
                 <div class="col-6">
@@ -41,7 +48,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label>Width:</label>
+                        <label>Width (Feet):</label>
                         <input type="text" name="width" id="" onkeypress="return isTextKey(event)"
                             class="form-control  @error('width') is-invalid @enderror" value="{{ old('width') }}">
                         @error('width')
@@ -51,7 +58,7 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label>Length:</label>
+                        <label>Length(Feet):</label>
                         <input type="text" name="length" id="" onkeypress="return isTextKey(event)"
                             class="form-control  @error('width') is-invalid @enderror" value="{{ old('length') }}">
                         @error('length')
@@ -79,6 +86,7 @@
                         @enderror
                     </div>
                 </div>
+                <input type="hidden" name="room_type_id" value="{{$room_type_id}}"/>
             </div>
             <button class="btn btn-sm btn-primary my-2" type="submit">Save</button>
         </Form>

@@ -47,7 +47,7 @@ class CustomerController extends Controller
         // Storing to User Table
         $user=new User;
         $user->user_id=$request->phone_no;
-        $user->name=$request->fname.''.$request->lname;
+        $user->name=$request->fname.' '.$request->lname;
         $user->password= Hash::make($request->phone_no);
         $user->user_type='customer';
         $user->attempt='0';
@@ -70,9 +70,10 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(Request $request)
     {
-        //
+        $customer = Customer::find($request->id);
+        return view('customers.edit',compact('customer'));
     }
 
     /**
@@ -80,7 +81,26 @@ class CustomerController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        $customer= Customer::find($request->customer_id);
+        $customer->fname=$request->fname;
+        $customer->lname=$request->lname;
+        $customer->gender=$request->gender;
+        $customer->nic=$request->nic;
+        $customer->dob=$request->dob;
+        $customer->address=$request->address;
+        $customer->phone_no=$request->phone_no;
+        $customer->email=$request->email;
+        $phone_no=$customer->phone_no;
+        $customer->save();
+
+        // Storing to User Table
+        $newPhoneNo=$request->phone_no;
+        $fullname = $request->input('fname').' '.$request->input('lname');
+        $user = User::where('user_id', $phone_no)->first();
+        $user->user_id=$newPhoneNo;
+        $user->name=$fullname;
+        $user->save();
+        return redirect()->to('/customers');
     }
 
     /**

@@ -3,15 +3,15 @@
 @section('content')
     <div class="container mt-3">
         <div>
-            <p class="h3">Create a Booking for Room, </p>
+            <p class="h3">Edit a Booking for Room, </p>
             <form class="d-inline me-1" action="{{ route('customer.show') }}" method="GET">
                 @csrf
                 @method('GET')
-                <input type="hidden" name="id" value="{{ $customer_id }}" />
+                <input type="hidden" name="id" value="{{ $booking->customer_id }}" />
                 <button type="submit" class="btn btn-sm btn-secondary">Back</a>
             </form>
         </div>
-        <Form action="{{ route('booking.payment') }}" method="POST">
+        <Form action="{{ route('bookings.store') }}" method="POST">
             @csrf
             <div class="row">
                 <div class="col-4">
@@ -45,7 +45,7 @@
                         <label>Date of Arival:</label>
                         <input type="date" name="arival_date" id="" onkeypress="return isTextKey(event)"
                             class="form-control @error('arival_date') is-invalid @enderror"
-                            value="{{ old('arival_date') }}">
+                            value="{{ $booking->check_in_date }}">
                         @error('arival_date')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -56,7 +56,7 @@
                         <label>Date of Departure:</label>
                         <input type="date" name="departure_date" id="departure_date"
                             class="form-control @error('departure_date') is-invalid @enderror"
-                            value="{{ old('departure_date') }}">
+                            value="{{ $booking->check_out_date }}">
                         @error('departure_date')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -67,7 +67,7 @@
                         <label>Time of Arival:</label>
                         <input type="time" name="arival_time" id="arival_time"
                             class="form-control @error('arival_time') is-invalid @enderror"
-                            value="{{ old('arival_time') }}">
+                            value="{{ $booking->check_in_time }}">
                         @error('arival_time')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -78,7 +78,7 @@
                         <label>Time of Departure:</label>
                         <input type="time" name="departure_time" id="departure_time"
                             class="form-control @error('departure_time') is-invalid @enderror"
-                            value="{{ old('departure_time') }}">
+                            value="{{ $booking->check_out_time}}">
                         @error('departure_time')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -89,7 +89,7 @@
                         <label>No of Adults:</label>
                         <input type="text" name="no_of_adults" id="no_of_adults"
                             class="form-control @error('no_of_adults') is-invalid @enderror"
-                            value="{{ old('no_of_adults') }}">
+                            value="{{$booking->no_of_adults }}">
                         @error('no_of_adults')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -101,14 +101,15 @@
                         <label>No of Childrens:</label>
                         <input type="text" name="no_of_children" id="no_of_children"
                             class="form-control @error('no_of_children') is-invalid @enderror"
-                            value="{{ old('no_of_children') }}">
+                            value="{{ $booking->no_of_childrens }}">
                         @error('no_of_children')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
                 
-                <input type="hidden" name="customer_id" value="{{ $customer_id }}" />
+                <input type="hidden" name="customer_id" value="{{ $booking->customer_id }}" />
+                <input type="hidden" id="booking_id" name="booking_id" value="{{ $booking->id }}" />
             </div>
             <button class="btn btn-sm btn-primary my-2" type="submit">Reserve</button>
         </Form>
@@ -123,10 +124,11 @@
 
         function getRooms() {
             $.ajax({
-                url: "{{route('room.getRooms')}}",
+                url: "{{route('booking.editGetRooms')}}",
                 method: 'GET',
                 data: {
                     room_type: $('#room_type').val(),
+                    id: $('#booking_id').val(),
                 },
                 success: function(response) {
                     console.log(response);

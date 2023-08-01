@@ -17,7 +17,7 @@ class UserController extends Controller
         }
         return view('auth.login');
     }
-
+    
     function login(Request $req){
         $user=User::where('user_id',$req->user_name)->first();
         if(!$user){
@@ -25,7 +25,6 @@ class UserController extends Controller
         }
         
         else{
-            
             if($user->attempt<3){
                 if(!Hash::check($req->password,$user->password)){
                     $lastAttempt=$user->attempt;
@@ -44,14 +43,14 @@ class UserController extends Controller
                         }
                         else{
                             $real_name=Customer::where('phone_no',$user->user_id)->first();
-
+                            
                         }
                         session()->put("user",[
                             "user_id"=>$user->user_id,
                             'name' => $user->name,
                             "user_type"=>$user->user_type,
                             "real_name"=>$real_name
-        
+                            
                         ]);
                         if(session()->get('user')['user_type']=='admin'){
                             return view('dashboard');
@@ -63,7 +62,7 @@ class UserController extends Controller
                     else{
                         return "Your account has been disabled,contact administrator";
                     }
-                   
+                    
                 }
             }
             else{
@@ -71,7 +70,7 @@ class UserController extends Controller
                 return view('auth.forget_password');
                 
             }
-
+            
         }
       
     }

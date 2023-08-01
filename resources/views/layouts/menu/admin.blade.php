@@ -14,20 +14,11 @@
             <a href="{{route('roomType.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-bath"></i>
                 <p>
-                    Room Types
+                    Room
                 </p>
             </a>
         </li>
         <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="" class="nav-link ">
-                        <i class="fas fa-bed nav-icon"></i>
-                        <p>Rooms</p>
-                    </a>
-                </li>
-               
-            </ul>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
                     <a href="{{route('booking.index')}}" class="nav-link ">
@@ -57,9 +48,9 @@
             </ul>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="" class="nav-link ">
+                    <a href="{{route('price.index')}}" class="nav-link ">
                         <i class="far fa-credit-card nav-icon"></i>
-                        <p>Payment Methods</p>
+                        <p>Price</p>
                     </a>
                 </li>
             </ul>

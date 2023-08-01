@@ -22,7 +22,6 @@ return new class extends Migration
             $table->integer('no_of_childrens');
             $table->string('status');
             $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('room_id');
             $table->timestamps();
         });
     }

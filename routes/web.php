@@ -5,6 +5,8 @@ use App\http\Controllers\UserController;
 use App\http\Controllers\CustomerController;
 use App\http\Controllers\BookingController;
 use App\http\Controllers\RoomTypeController;
+use App\http\Controllers\RoomController;
+use App\http\Controllers\PriceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,17 +56,26 @@ Route::group(['prefix'=>'login'],function(){
 
 // customers
 Route::group(['prefix'=>'customers'],function(){
-    Route::get('/customers',[CustomerController::class,'index'])->name('customer.index');
+    Route::get('/',[CustomerController::class,'index'])->name('customer.index');
     Route::get('/create',[CustomerController::class,'create'])->name('customer.create');
     Route::post('/store',[CustomerController::class,'store'])->name('customer.store');
     Route::get('/show',[CustomerController::class,'show'])->name('customer.show');
+    Route::get('/edit',[CustomerController::class,'edit'])->name('customer.edit');
+    Route::put('/update',[CustomerController::class,'update'])->name('customer.update');
 
 });
+
 // bookings
 Route::group(['prefix'=>'bookings'],function(){
     Route::get('/',[BookingController::class,'index'])->name('booking.index');
     Route::get('/create',[BookingController::class,'create'])->name('bookings.create');
     Route::post('/store',[BookingController::class,'store'])->name('bookings.store');
+    Route::get('/getRooms',[BookingController::class,'getRooms'])->name('room.getRooms');
+    Route::get('/edit',[BookingController::class,'edit'])->name('booking.edit');
+    Route::get('/editGetRooms',[BookingController::class,'editGetRooms'])->name('booking.editGetRooms');
+    Route::get('/cancel',[BookingController::class,'cancelBooking'])->name('booking.cancel');
+    Route::post('/payment',[BookingController::class,'payment'])->name('booking.payment');
+
 
 });
 
@@ -85,5 +96,15 @@ Route::group(['prefix'=>'rooms'],function(){
     Route::get('/edit',[RoomController::class,'edit'])->name('room.edit');
     Route::put('/update',[RoomController::class,'update'])->name('room.update');
     Route::get('/show',[RoomController::class,'show'])->name('room.show');
+    Route::get('/maintanaceMode',[RoomController::class,'maintanaceMode'])->name('room.maintanaceMode');
+});
 
+Route::group(['prefix'=>'price'],function(){
+    Route::get('/',[PriceController::class,'index'])->name('price.index');
+    Route::get('/create',[PriceController::class,'create'])->name('price.create');
+    Route::post('/store',[PriceController::class,'store'])->name('price.store');
+    Route::get('/edit',[PriceController::class,'edit'])->name('price.edit');
+    Route::put('/update',[PriceController::class,'update'])->name('price.update');
+    Route::delete('/delete',[PriceController::class,'delete'])->name('price.delete');
+    Route::get('/getRooms',[PriceController::class,'getRooms'])->name('price.getRooms');
 });
