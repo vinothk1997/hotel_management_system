@@ -10,16 +10,21 @@ use App\Models\RoomType;
 use App\Models\Room;
 use App\Models\Price;
 use Carbon\Carbon;
-
-
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Services\Common;
 class BookingController extends Controller
 {
     function index(){
-        $customer=Customer::where('phone_no',session()->get('user')['user_id'])->get()->first();
-        $bookings=$customer?$customer->booking:'';
-        return view('bookings.index',compact('customer','bookings'));
+        $bookings=Booking::all();
+        return view('bookings.index',compact('bookings'));
     }
 
+    function customerBooking(){
+        $customer_id= session()->get('user')['real_name']->id;
+        $bookings = Booking::where('customer_id',$customer_id)->get();
+        // return $bookings;
+        return view('bookings.customer-index',compact('bookings','customer_id'));
+    }
     function create(Request $request){
         $customer_id=$request->customer_id;
         $roomTypes=RoomType::all();
@@ -27,6 +32,11 @@ class BookingController extends Controller
     }
 
     function payment(Request $request){
+        $total=Price::whereIn('room_id',$request->room!=null?$request->room:[])->sum('price_per_day');
+        $room_no =Room::whereIn('id',$request->room!=null?$request->room:[])->pluck('room_no')->implode(',');
+        $no_of_rooms=collect($request->room)->count();
+        $no_of_adults = $request->no_of_adults??0;
+        $no_of_childrens = $request->no_of_childrens??0;
         $booking=[
             'booking_date'=>Carbon::now(),
             'check_in_date' =>$request->arival_date,
@@ -37,14 +47,14 @@ class BookingController extends Controller
             'no_of_childrens'=> $request->no_of_children,
             'customer_id' => $request->customer_id,
             'rooms' =>$request->room,
+            'total'=>$total,
+            'room_no'=>$room_no,
+            'no_of_rooms'=>$no_of_rooms,
+            'no_of_adults' =>$no_of_adults,
+            'no_of_childrens' => $no_of_childrens
         ];
 
         session()->put('booking',$booking);
-        $total=Price::whereIn('room_id',$request->room!=null?$request->room:[])->sum('price_per_day');
-        $room_no =Room::whereIn('id',$request->room!=null?$request->room:[])->pluck('room_no')->implode(',');
-        $no_of_rooms=collect($request->room)->count();
-        $no_of_adults = $request->no_of_adults??0;
-        $no_of_childrens = $request->no_of_childrens??0;
         
         return view('payment.add',compact('total','no_of_rooms','no_of_adults','no_of_childrens','room_no'));
 
@@ -52,7 +62,8 @@ class BookingController extends Controller
 
     function store(Request $request){
         $bookingData=Session::get('booking');
-        return $bookingData;
+        $user=Session::get('user');
+        // return $bookingData;
         $booking = new Booking;
         $booking->booking_date = $bookingData['booking_date'];
         $booking->check_in_date = $bookingData['check_in_date'];
@@ -65,16 +76,18 @@ class BookingController extends Controller
         $booking->customer_id = $bookingData['customer_id'];
         $booking->save();
 
-        $obj=Room::whereIn('id',$rooms)
+        $obj=Room::whereIn('id',$bookingData['rooms'])
         ->update(['is_occupied'=>'Yes']);
 
-        foreach($rooms as $room){
+        foreach($bookingData['rooms'] as $room){
             $booking->rooms()->attach($room);
         }
-
- 
-        return view('payment.add',compact(''));
-        // return redirect()->to('/customers/show?id='.$customer_id);
+        // To send message
+        Common::message($user['user_id'],'Dear'.' '.$booking->customer->lname.'You have booked the below mentioned rooms with us, thank you'.'Room_no'.$bookingData['room_no']);
+        Pdf::setOption(['dpi' => 150, 'defaultPaperSize' => 'a8']);
+        $pdf = Pdf::loadView('payment.receipt',['bookingData'=>$bookingData],['user'=>$user]);
+        return $pdf->download('invoice.pdf');
+        return redirect()->to('/customers/show?id='.$bookingData['customer_id']);
     }
     function getRooms(Request $request){
         // return $request;
@@ -148,4 +161,5 @@ class BookingController extends Controller
         );
         return redirect()->back();
     }
+
 }

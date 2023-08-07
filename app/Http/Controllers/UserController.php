@@ -23,7 +23,6 @@ class UserController extends Controller
         if(!$user){
             return view('auth.login',['message'=>"user_error"]);
         }
-        
         else{
             if($user->attempt<3){
                 if(!Hash::check($req->password,$user->password)){
@@ -52,6 +51,7 @@ class UserController extends Controller
                             "real_name"=>$real_name
                             
                         ]);
+                        // return session()->all();
                         if(session()->get('user')['user_type']=='admin'){
                             return view('dashboard');
                         }
@@ -86,17 +86,17 @@ class UserController extends Controller
     }
     
     function recover(Request $req){
-        $user=User::where('name',$req->user_name)->first();
+        $user=User::where('user_id',$req->mobile)->first();
         if(!$user){
             return view('auth.forget_password',['wrong_user'=>true]);
         }
         else{
             //determin as to select family head or staff to find mobile 
-            if($user->user_type=="family head"){
-                $user_mobile=FamilyHead::where('nic',$user->name)->pluck('mobile')->first();
+            if($user->user_type=="customer"){
+                $user_mobile=Customer::where('phone_no',$user->user_id)->pluck('phone_no')->first();
             }
-            else{
-                $user_mobile=Staff::where('nic',$user->name)->pluck('mobile')->first();
+            elseif($user->user_type=="admin"){
+                $user_mobile=Staff::where('phone_no',$user->user_id)->pluck('phone_no')->first();
             }
             // determine request mobile and database mobile is matched.
             if($user_mobile==$req->mobile){

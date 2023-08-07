@@ -83,7 +83,7 @@
 
             <!-- AdminLTE App -->
             <script src="{{ asset('dist/js/adminlte.js') }}"></script>
-            <script src="{{ asset('js/validation.js') }}"></script>
+            <script src="{{ asset('assets/js/validation.js') }}"></script>
             <script>
                 function toast() {
                     $.toast({

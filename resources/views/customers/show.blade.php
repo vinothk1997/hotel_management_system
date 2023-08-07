@@ -20,7 +20,6 @@
                 <th>Departure Date</th>
                 <th>No of Adults</th>
                 <th>No of Childrens</th>
-                <th>Total</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -36,7 +35,6 @@
                     <td>{{ $booking->check_out_date }}</td>
                     <td>{{ $booking->no_of_adults }}</td>
                     <td>{{ $booking->no_of_childrens }}</td>
-                    <td>total</td>
                     <td>{{ $booking->status }}</td>
 
                     @if ($booking->status != 'Cancelled')

@@ -2,6 +2,14 @@
 @section('title', 'familyHeads')
 @section('content')
     <p class="h3">Booking Details</p>
+    <div>
+        <form class="d-inline me-1" action="{{ route('bookings.create') }}" method="GET">
+            @csrf
+            @method('GET')
+            <input type="hidden" name="customer_id" value="{{ $customer_id }}" />
+            <button type="submit" class="btn btn-sm btn-primary">Add New</a>
+        </form>
+    </div>
     <table id="example" class="display" style="width:100%">
         <thead>
             <tr>

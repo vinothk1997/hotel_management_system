@@ -7,6 +7,12 @@ use App\http\Controllers\BookingController;
 use App\http\Controllers\RoomTypeController;
 use App\http\Controllers\RoomController;
 use App\http\Controllers\PriceController;
+use App\http\Controllers\StaffController;
+use App\http\Controllers\AjaxController;
+use App\http\Controllers\ReportController;
+use App\http\Controllers\DashboardController;
+
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,11 +41,7 @@ Route::get('/rooms-and-suites', function () {
     return view('guest.rooms-and-suites');
 })->name('guest.rooms-and-suites');
 
-// Booking
-Route::group(['prefix' => 'bookings'],function(){
-    Route::get('create',[App\Http\Controllers\BookingController::class,'create'])->name('bookings.create');
-});
-
+Route::get("/calculatenic/{nic}",[AjaxController::class,'calculateNic']);
 // authentication
 Route::group(['prefix'=>'login'],function(){
     Route::get('/',[UserController::class,'showLogin'])->name('auth.index');
@@ -75,6 +77,8 @@ Route::group(['prefix'=>'bookings'],function(){
     Route::get('/editGetRooms',[BookingController::class,'editGetRooms'])->name('booking.editGetRooms');
     Route::get('/cancel',[BookingController::class,'cancelBooking'])->name('booking.cancel');
     Route::post('/payment',[BookingController::class,'payment'])->name('booking.payment');
+    Route::get('/pay',[BookingController::class,'pay']);
+    Route::get('/cutomer-booking',[BookingController::class,'customerBooking'])->name('booking.customer-booking');
 
 
 });
@@ -107,4 +111,30 @@ Route::group(['prefix'=>'price'],function(){
     Route::put('/update',[PriceController::class,'update'])->name('price.update');
     Route::delete('/delete',[PriceController::class,'delete'])->name('price.delete');
     Route::get('/getRooms',[PriceController::class,'getRooms'])->name('price.getRooms');
+});
+
+Route::group(['prefix'=>'staffs'],function(){
+    Route::get('/',[StaffController::class,'index'])->name('staff.index');
+    Route::get('/create',[StaffController::class,'create'])->name('staff.create');
+    Route::post('/store',[StaffController::class,'store'])->name('staff.store');
+    Route::get('/edit',[StaffController::class,'edit'])->name('staff.edit');
+    Route::put('/update',[StaffController::class,'update'])->name('staff.update');
+    Route::delete('/delete',[StaffController::class,'delete'])->name('staff.delete');
+});
+
+Route::group(['prefix'=>'report'],function(){
+    Route::get('/createGenderBasedReport',[ReportController::class,'createGenderBasedReport'])->name('report.generateGenderBasedReport');
+    Route::get('/generateGenderBasedReport',[ReportController::class,'generateGenderBasedReport'])->name('report.generateGenderBasedReport');
+    Route::get('/create',[ReportController::class,'create'])->name('report.generateDOBBasedReport');
+    Route::post('/store',[ReportController::class,'store'])->name('report.store');
+    Route::get('/edit',[ReportController::class,'edit'])->name('report.edit');
+    Route::put('/update',[ReportController::class,'update'])->name('report.update');
+    Route::delete('/delete',[ReportController::class,'delete'])->name('report.delete');
+});
+
+Route::group(['prefix' =>'dashboard'],function(){
+    Route::get('/genderBasedGraph',[DashboardController::class,'genderBasedGraph'])->name('dashboard.genderBasedGraph');
+    Route::get('/DOBBasedGraph',[DashboardController::class,'DOBBasedGraph'])->name('dashboard.DOBBasedGraph');
+    Route::get('/generateMonthlyGraph',[DashboardController::class,'generateMonthlyGraph'])->name('dashboard.generateMonthlyGraph');
+
 });
