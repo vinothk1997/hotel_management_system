@@ -45,10 +45,17 @@
                                 <input type="hidden" name="id" value="{{ $booking->id }}" />
                                 <button type="submit" class="btn btn-sm btn-primary">View</a>
                             </form>
+
                             <form class="d-inline" action="{{ route('booking.edit') }}" method="GET">
 
                                 <input type="hidden" name="id" value="{{ $booking->id }}" />
                                 <button type="submit" class="btn btn-sm btn-secondary mx-2">Edit</a>
+                            </form>
+
+                            <form class="d-inline" action="{{ route('booking.checkout') }}" method="GET">
+
+                                <input type="hidden" name="id" value="{{ $booking->id }}" />
+                                <button type="submit" class="btn btn-sm btn-success mx-2">Check Out</a>
                             </form>
                             <form class="d-inline" action="{{ route('booking.cancel') }}" method="GET">
                                 <input type="hidden" name="id" value="{{ $booking->id }}">

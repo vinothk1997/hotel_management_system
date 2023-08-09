@@ -8,9 +8,42 @@ use App\Models\Customer;
 class ReportController extends Controller
 {
     function createGenderBasedReport(){
-        return view('report.family-report1');
+        return view('report.gender');
     }
 
+    function generateGenderBasedReport(Request $request){
+        $gender=$request->gender;
+        $all_customers=Customer::get();
+        if($gender=='all'){
+            $customers=$all_customers;
+        }
+        else{
+            $customers=$all_customers->where('gender',$gender);
+        }
+
+        $data = '<table class="table table-bordered">
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Date of Birth</th>
+            </tr>';
+
+        foreach ($customers as $customer) {
+            $data .= '<tr class="data ">
+                        <td>' . $customer->fname . '</td>
+                        <td>' . $customer->lname . '</td>
+                        <td>' . $customer->phone_no . '</td>
+                        <td>' . $customer->address . '</td>
+                        <td>' . $customer->dob . '</td>
+                    </tr>';
+        }
+
+        $data .= '</table>';
+        return $data;
+
+    }
     function generateFamilyBasedDOB(Request $req){
         if($req->end_date>=$req->start_date){
             $familyHeads = Cust::where('dob', '>', $req->start_date)

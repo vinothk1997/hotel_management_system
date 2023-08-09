@@ -16,7 +16,7 @@
                             <option>Cash Payment</option>
                         </select>
                     </div>
-                    <p>Total Paid: <span>{{$total}}</span></p>
+                    <p>Total: <span>Rs. {{$total}}</span></p>
                     <p>Date of Payment: {{ date('Y-m-d') }} at {{ date('h:i') }}</p>
                     <p>No of Rooms: <span>{{$no_of_rooms}}</span><span>({{$room_no}})</span></p>
                     <p>No of childrens: <span>{{$no_of_childrens}}</span></p>

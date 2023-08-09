@@ -74,6 +74,7 @@ Route::group(['prefix'=>'bookings'],function(){
     Route::post('/store',[BookingController::class,'store'])->name('bookings.store');
     Route::get('/getRooms',[BookingController::class,'getRooms'])->name('room.getRooms');
     Route::get('/edit',[BookingController::class,'edit'])->name('booking.edit');
+    Route::get('/get',[BookingController::class,'checkOut'])->name('booking.checkout');
     Route::get('/editGetRooms',[BookingController::class,'editGetRooms'])->name('booking.editGetRooms');
     Route::get('/cancel',[BookingController::class,'cancelBooking'])->name('booking.cancel');
     Route::post('/payment',[BookingController::class,'payment'])->name('booking.payment');
@@ -123,7 +124,7 @@ Route::group(['prefix'=>'staffs'],function(){
 });
 
 Route::group(['prefix'=>'report'],function(){
-    Route::get('/createGenderBasedReport',[ReportController::class,'createGenderBasedReport'])->name('report.generateGenderBasedReport');
+    Route::get('/createGenderBasedReport',[ReportController::class,'createGenderBasedReport'])->name('report.createGenderBasedReport');
     Route::get('/generateGenderBasedReport',[ReportController::class,'generateGenderBasedReport'])->name('report.generateGenderBasedReport');
     Route::get('/create',[ReportController::class,'create'])->name('report.generateDOBBasedReport');
     Route::post('/store',[ReportController::class,'store'])->name('report.store');
@@ -133,6 +134,7 @@ Route::group(['prefix'=>'report'],function(){
 });
 
 Route::group(['prefix' =>'dashboard'],function(){
+    Route::get('/',[DashboardController::class,'index'])->name('dashboard.index');
     Route::get('/genderBasedGraph',[DashboardController::class,'genderBasedGraph'])->name('dashboard.genderBasedGraph');
     Route::get('/DOBBasedGraph',[DashboardController::class,'DOBBasedGraph'])->name('dashboard.DOBBasedGraph');
     Route::get('/generateMonthlyGraph',[DashboardController::class,'generateMonthlyGraph'])->name('dashboard.generateMonthlyGraph');

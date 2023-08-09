@@ -32,11 +32,15 @@ class BookingController extends Controller
     }
 
     function payment(Request $request){
-        $total=Price::whereIn('room_id',$request->room!=null?$request->room:[])->sum('price_per_day');
+        $total_per_day=Price::whereIn('room_id',$request->room!=null?$request->room:[])->sum('price_per_day');
+        $arrivalDate = Carbon::parse($request->arival_date);
+        $departureDate = Carbon::parse($request->departure_date);
+        $numberOfDays = $arrivalDate->diffInDays($departureDate);
+        $total = $total_per_day*$numberOfDays;
         $room_no =Room::whereIn('id',$request->room!=null?$request->room:[])->pluck('room_no')->implode(',');
         $no_of_rooms=collect($request->room)->count();
         $no_of_adults = $request->no_of_adults??0;
-        $no_of_childrens = $request->no_of_childrens??0;
+        $no_of_childrens = $request->no_of_children??0;
         $booking=[
             'booking_date'=>Carbon::now(),
             'check_in_date' =>$request->arival_date,
@@ -83,10 +87,10 @@ class BookingController extends Controller
             $booking->rooms()->attach($room);
         }
         // To send message
-        Common::message($user['user_id'],'Dear'.' '.$booking->customer->lname.'You have booked the below mentioned rooms with us, thank you'.'Room_no'.$bookingData['room_no']);
-        Pdf::setOption(['dpi' => 150, 'defaultPaperSize' => 'a8']);
+        // return session()->get('user');
+        // Common::message($user['user_id'],'Dear'.' '.$booking->customer->lname.'You have booked the below mentioned rooms with us, thank you'.'Room_no'.$bookingData['room_no']);
         $pdf = Pdf::loadView('payment.receipt',['bookingData'=>$bookingData],['user'=>$user]);
-        return $pdf->download('invoice.pdf');
+        return $pdf->stream('document.pdf');
         return redirect()->to('/customers/show?id='.$bookingData['customer_id']);
     }
     function getRooms(Request $request){
@@ -160,6 +164,19 @@ class BookingController extends Controller
             ['rooms.is_occupied'=>'No']
         );
         return redirect()->back();
+    }
+
+    function checkOut(Request $request){
+        $booking  = Booking::find($request->id);
+        $booking->status='checkOut';
+        $booking->save();
+
+        $rooms = $booking->rooms()->pluck('rooms.id');
+        Room::whereIn('id',$rooms)
+        ->update([
+            'is_occupied'=>'No',
+        ]);
+
     }
 
 }

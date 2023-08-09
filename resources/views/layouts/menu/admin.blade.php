@@ -3,7 +3,7 @@
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
-            <a href="" class="nav-link">
+            <a href="{{route('dashboard.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-home"></i>
                 <p>
                     Home
@@ -113,7 +113,7 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="{{route('report.createGenderBasedReport')}}" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Gender-Customer

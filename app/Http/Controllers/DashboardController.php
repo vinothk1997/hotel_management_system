@@ -10,6 +10,10 @@ use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
+
+    function index(){
+        return view('dashboard');
+    }
     function genderBasedGraph(){
        $customer=Customer::all();
        $male = $customer->where('gender','Male')->count();
