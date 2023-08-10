@@ -33,6 +33,16 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         // storing to customer table
+        $validated = $request->validate([
+            'fname' => 'required',
+            'lname' => 'required',
+            'gender' => 'required',
+            'dob' => 'required',
+            'address' => 'required',
+            'nic' => 'required|unique:customers',
+            'phone_no' => 'required|unique:customers',
+            'email' => 'unique:customers',
+        ]);
         $customer= new Customer;
         $customer->fname=$request->fname;
         $customer->lname=$request->lname;

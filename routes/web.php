@@ -126,10 +126,10 @@ Route::group(['prefix'=>'staffs'],function(){
 Route::group(['prefix'=>'report'],function(){
     Route::get('/createGenderBasedReport',[ReportController::class,'createGenderBasedReport'])->name('report.createGenderBasedReport');
     Route::get('/generateGenderBasedReport',[ReportController::class,'generateGenderBasedReport'])->name('report.generateGenderBasedReport');
-    Route::get('/create',[ReportController::class,'create'])->name('report.generateDOBBasedReport');
-    Route::post('/store',[ReportController::class,'store'])->name('report.store');
-    Route::get('/edit',[ReportController::class,'edit'])->name('report.edit');
-    Route::put('/update',[ReportController::class,'update'])->name('report.update');
+    Route::get('/createBookingDateReport',[ReportController::class,'createBookingDateReport'])->name('report.createBookingDateReport');
+    Route::get('/generateBookingDateReport',[ReportController::class,'generateBookingDateReport'])->name('report.generateBookingDateReport');
+    Route::get('/createBookingStatusReport',[ReportController::class,'createBookingStatusReport'])->name('report.createBookingStatusReport');
+    Route::get('/generateBookingStatusReport',[ReportController::class,'generateBookingStatusReport'])->name('report.generateBookingStatusReport');
     Route::delete('/delete',[ReportController::class,'delete'])->name('report.delete');
 });
 

@@ -9,6 +9,7 @@ use App\Models\Booking;
 use App\Models\RoomType;
 use App\Models\Room;
 use App\Models\Price;
+use App\Models\payment;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Services\Common;
@@ -87,8 +88,20 @@ class BookingController extends Controller
             $booking->rooms()->attach($room);
         }
         // To send message
-        // return session()->get('user');
-        // Common::message($user['user_id'],'Dear'.' '.$booking->customer->lname.'You have booked the below mentioned rooms with us, thank you'.'Room_no'.$bookingData['room_no']);
+        $msg='Dear'.' '.$booking->customer->lname.'You have booked the below mentioned rooms with us, 
+        thank you'.'Room_no'.$bookingData['room_no'];
+
+        Common::message($user['user_id'],$msg);
+
+        // store Payment 
+        $payment = new Payment;
+        $payment->amout_paid=$bookingData['total'];
+        $payment->method_of_payment	=$request->payment_method;
+        $payment->status='Not Paid';
+        $payment->customer_id=$bookingData['customer_id'];
+        $payment->booking_id=$booking->booking_id;
+        $payment->save();
+
         $pdf = Pdf::loadView('payment.receipt',['bookingData'=>$bookingData],['user'=>$user]);
         return $pdf->stream('document.pdf');
         return redirect()->to('/customers/show?id='.$bookingData['customer_id']);
@@ -156,14 +169,24 @@ class BookingController extends Controller
 
     function cancelBooking(Request $request){
         $booking = Booking::find($request->id);
-        $booking->status = 'Cancelled';
-        $booking->save();
-        
-        $roomReleased=$booking->rooms()
-        ->update(
-            ['rooms.is_occupied'=>'No']
-        );
-        return redirect()->back();
+        if(Carbon::today()<$booking->check_in_date){
+            $booking->status = 'Cancelled';
+            $booking->save();
+            
+            $roomReleased=$booking->rooms()
+            ->update(
+                ['rooms.is_occupied'=>'No']
+            );
+            return redirect()->back();
+        }
+        else{
+            echo "
+            <script>
+            alert('you are unable to cancel the booking, contact us');
+            </script>";
+            return redirect()->back();
+           
+        }
     }
 
     function checkOut(Request $request){

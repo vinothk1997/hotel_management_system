@@ -45,6 +45,7 @@ class UserController extends Controller
                             
                         }
                         session()->put("user",[
+                            'id'=>$user->id,
                             "user_id"=>$user->user_id,
                             'name' => $user->name,
                             "user_type"=>$user->user_type,
@@ -161,13 +162,14 @@ class UserController extends Controller
     }
 
     function changePassword (Request $req){
+        // return $req;
         $newPassword=$req->new_password;
         $confirmNewPassword=$req->confirm_new_password;
         $enteredCurrentPassword=$req->current_password; 
-        $loggedCurrentPassword=User::where('name',$req->user_name)->first()->pluck('password')[0];
+        $loggedCurrentPassword=User::where('id',$req->user_name)->first()->pluck('password')[0];
         if(Hash::check($enteredCurrentPassword,$loggedCurrentPassword)){
             if($newPassword===$confirmNewPassword){
-                $user =User::where('name',$req->user_name)->first();
+                $user =User::where('id',$req->user_name)->first();
                 $user->password=Hash::make($newPassword);
                 $user->save();
                 session()->flush();

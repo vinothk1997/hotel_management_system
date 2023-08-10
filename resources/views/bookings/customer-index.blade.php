@@ -19,8 +19,7 @@
                 <th>Departure Date</th>
                 <th>No of Adults</th>
                 <th>No of Childrens</th>
-                <th>Customer Name</th>
-                <th>Phone_no</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -33,16 +32,18 @@
                 <td>{{$booking->check_out_date}}</td>
                 <td>{{$booking->no_of_adults}}</td>
                 <td>{{$booking->no_of_childrens}}</td>
-                <td>{{$booking->customer?$booking->customer->fname.' '.$booking->customer->lname:''}}</td>
-                <td>{{$booking->customer?$booking->customer->phone_no:''}}</td>
+                <td>{{$booking->status}}</td>
+                {{-- <td>{{$booking->customer?$booking->customer->fname.' '.$booking->customer->lname:''}}</td>
+                <td>{{$booking->customer?$booking->customer->phone_no:''}}</td> --}}
                 <td>
-                    <form class="d-inline me-1" action="" method="GET">
+                    @if($booking->status=='booked' ) 
+                    <form class="d-inline me-1" action="{{route('booking.cancel')}}" method="GET">
                         @csrf
                         @method('GET')
-                        <input type="hidden" name="familyId" value="" />
-                        <button type="submit" class="btn btn-sm btn-primary">View</a>
+                        <input type="hidden" name="id" value="{{$booking->id}}" />
+                        <button type="submit" class="btn btn-sm btn-primary">Cancel</a>
                     </form>
-                   
+                    @endif
                 </td>
             </tr>
             @endforeach

@@ -3,7 +3,7 @@
 @section('content')
     <p class="h3">Staffs</p>
     <a href="{{ route('staff.create') }}" class="btn btn-primary btn-sm">Add New</a>
-    <table class="table" class="display" style="width:100%" id="staff">
+    <table class="table" class="display" style="width:100%" id="example">
         <thead>
             <tr>
                 <th>First Name</th>
@@ -48,4 +48,12 @@
             @endforeach
         </tbody>
     </table>
+    <script>
+        $(document).ready(function() {
+            var table = $('#example').DataTable();
+        });
+        table
+            .order([1, 'desc'])
+            .draw();
+    </script>
 @endsection

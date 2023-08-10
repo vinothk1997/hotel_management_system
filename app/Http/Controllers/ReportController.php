@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\Booking;
 
 class ReportController extends Controller
 {
@@ -44,12 +45,42 @@ class ReportController extends Controller
         return $data;
 
     }
-    function generateFamilyBasedDOB(Request $req){
+
+    function createBookingDateReport(){
+        return view('report.booking-date');
+    }
+
+    function generateBookingDateReport(Request $req){
+        // return $req;
         if($req->end_date>=$req->start_date){
-            $familyHeads = Cust::where('dob', '>', $req->start_date)
-            ->where('dob', '<', $req->end_date)
+            $bookings = Booking::with('customer')->where('booking_date', '>', $req->start_date)
+            ->where('booking_date', '<', $req->end_date)
             ->get();
-            return $familyHeads;
+            foreach($bookings as $booking){
+                $booking['room_no']=$booking->rooms()->pluck('room_no')->implode(',');
+            }
+            return $bookings;
+        }
+        else{
+            return '';
+        }
+    }
+
+    function createBookingStatusReport(){
+        return view('report.booking-status');
+    }
+
+    function generateBookingStatusReport(Request $req){
+        // return $req;
+        if($req->end_date>=$req->start_date){
+            $bookings = Booking::with('customer')->where('booking_date', '>', $req->start_date)
+            ->where('booking_date', '<', $req->end_date)
+            ->where('status',$req->status)
+            ->get();
+            foreach($bookings as $booking){
+                $booking['room_no']=$booking->rooms()->pluck('room_no')->implode(',');
+            }
+            return $bookings;
         }
         else{
             return '';

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->date('check_out_date');
             $table->time('check_in_time');
             $table->time('check_out_time');
-            $table->integer('no_of_adults');
-            $table->integer('no_of_childrens');
-            $table->string('status');
+            $table->integer('no_of_adults')->nullable();
+            $table->integer('no_of_childrens')->nullable();
+            $table->string('status')->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->timestamps();
         });

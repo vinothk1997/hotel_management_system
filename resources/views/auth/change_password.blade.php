@@ -6,7 +6,7 @@
         @csrf
         <div>
             <label class="form-label">User Name:</label>
-            <input type="text" name="user_name" id="user_name" value="{{Session::get('user')['name']}}" readonly
+            <input type="text"  id="user_name" value="{{Session::get('user')['name']}}" readonly
                 class="form-control">
         </div>
         <div>
@@ -26,6 +26,7 @@
             <a href="" name="clear" class="btn btn-primary px-5 ">Clear</a>
             <input type="submit" value="Change password" name="changePassword" class="btn btn-success ms-3 px-5" />
         </div>
+        <input type="hidden"  name="user_name" value="{{Session::get('user')['id']}}"/>
     </form>
     <script>
     function check_password() {
