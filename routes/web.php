@@ -11,6 +11,7 @@ use App\http\Controllers\StaffController;
 use App\http\Controllers\AjaxController;
 use App\http\Controllers\ReportController;
 use App\http\Controllers\DashboardController;
+use App\http\Controllers\PaymentController;
 
 use Carbon\Carbon;
 
@@ -77,7 +78,7 @@ Route::group(['prefix'=>'bookings'],function(){
     Route::get('/get',[BookingController::class,'checkOut'])->name('booking.checkout');
     Route::get('/editGetRooms',[BookingController::class,'editGetRooms'])->name('booking.editGetRooms');
     Route::get('/cancel',[BookingController::class,'cancelBooking'])->name('booking.cancel');
-    Route::post('/payment',[BookingController::class,'payment'])->name('booking.payment');
+    Route::get('/payment',[BookingController::class,'payment'])->name('booking.payment');
     Route::get('/pay',[BookingController::class,'pay']);
     Route::get('/cutomer-booking',[BookingController::class,'customerBooking'])->name('booking.customer-booking');
 
@@ -138,5 +139,11 @@ Route::group(['prefix' =>'dashboard'],function(){
     Route::get('/genderBasedGraph',[DashboardController::class,'genderBasedGraph'])->name('dashboard.genderBasedGraph');
     Route::get('/DOBBasedGraph',[DashboardController::class,'DOBBasedGraph'])->name('dashboard.DOBBasedGraph');
     Route::get('/generateMonthlyGraph',[DashboardController::class,'generateMonthlyGraph'])->name('dashboard.generateMonthlyGraph');
+
+});
+
+Route::group(['prefix'=>'payments'],function(){
+    Route::get('/create',[PaymentController::class,'create'])->name('payment.create');
+    Route::post('/store',[PaymentController::class,'store'])->name('payment.store');
 
 });

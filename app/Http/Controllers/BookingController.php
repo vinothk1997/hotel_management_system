@@ -33,11 +33,20 @@ class BookingController extends Controller
     }
 
     function payment(Request $request){
+         $validated = $request->validate([
+        'arival_date' => 'required',
+        'departure_date' => 'required',
+        'room' => 'required',
+        'arival_time' => 'required',
+        'departure_time' => 'required',
+        ]);
+
         $total_per_day=Price::whereIn('room_id',$request->room!=null?$request->room:[])->sum('price_per_day');
         $arrivalDate = Carbon::parse($request->arival_date);
         $departureDate = Carbon::parse($request->departure_date);
         $numberOfDays = $arrivalDate->diffInDays($departureDate);
         $total = $total_per_day*$numberOfDays;
+        // return $total_per_day;
         $room_no =Room::whereIn('id',$request->room!=null?$request->room:[])->pluck('room_no')->implode(',');
         $no_of_rooms=collect($request->room)->count();
         $no_of_adults = $request->no_of_adults??0;
@@ -66,6 +75,10 @@ class BookingController extends Controller
     }
 
     function store(Request $request){
+        // return $request;
+        $validated = $request->validate([
+            'payment_method' => 'required',
+            ]);
         $bookingData=Session::get('booking');
         $user=Session::get('user');
         // return $bookingData;
@@ -88,18 +101,19 @@ class BookingController extends Controller
             $booking->rooms()->attach($room);
         }
         // To send message
-        $msg='Dear'.' '.$booking->customer->lname.'You have booked the below mentioned rooms with us, 
-        thank you'.'Room_no'.$bookingData['room_no'];
+        $phone_no = $booking->customer->phone_no;
+        $msg='Dear'.' '.$booking->customer->lname.
+        'You have booked the below mentioned rooms with us,thank you, '.'Room_no'.$bookingData['room_no'];
 
-        Common::message($user['user_id'],$msg);
+        // Common::message($phone_no,$msg);
 
         // store Payment 
         $payment = new Payment;
-        $payment->amout_paid=$bookingData['total'];
+        $payment->amount=$bookingData['total'];
         $payment->method_of_payment	=$request->payment_method;
         $payment->status='Not Paid';
         $payment->customer_id=$bookingData['customer_id'];
-        $payment->booking_id=$booking->booking_id;
+        $payment->booking_id=$booking->id;
         $payment->save();
 
         $pdf = Pdf::loadView('payment.receipt',['bookingData'=>$bookingData],['user'=>$user]);

@@ -11,16 +11,16 @@
                 <button type="submit" class="btn btn-sm btn-secondary">Back</a>
             </form>
         </div>
-        <Form action="{{ route('booking.payment') }}" method="POST">
-            @csrf
+        <Form action="{{ route('booking.payment') }}" method="GET">
+            {{-- @csrf --}}
             <div class="row">
                 <div class="col-4">
                     <div class="form-group">
                         <label> Room Type:</label>
                         <select class="form-control" name="room_type" id="room_type">
                             <option>Select room Type</option>
-                            @foreach($roomTypes as $roomType)
-                            <option value="{{$roomType->id}}">{{$roomType->type}}</option>
+                            @foreach ($roomTypes as $roomType)
+                                <option value="{{ $roomType->id }}">{{ $roomType->type }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -36,14 +36,14 @@
                         <th>No of Chairs</th>
                         <th>No of Tables</th>
                     </tr>
-                    
+
                 </table>
             </div>
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
                         <label>Date of Arival:</label>
-                        <input type="date" name="arival_date" id="" onkeypress="return isTextKey(event)"
+                        <input type="date" name="arival_date" id="arival_date" onkeypress="return isTextKey(event)"
                             class="form-control @error('arival_date') is-invalid @enderror"
                             value="{{ old('arival_date') }}">
                         @error('arival_date')
@@ -107,23 +107,40 @@
                         @enderror
                     </div>
                 </div>
-                
+
                 <input type="hidden" name="customer_id" value="{{ $customer_id }}" />
             </div>
             <button class="btn btn-sm btn-primary my-2" type="submit">Reserve</button>
         </Form>
     </div>
     <script>
+        $('#arival_date').on('change', function() {
+            checkDate();
+        });
+        $('#departure_date').on('change', function() {
+            checkDate();
+        });
+
+
+        function checkDate() {
+            var arrivalDate = new Date($('#arival_date').val());
+            var departureDate = new Date($('#departure_date').val());
+
+            if (arrivalDate > departureDate) {
+                alert('Arrival Date should be less than departure date');
+            }
+        }
+
         var $room_type = $('#room_type');
 
         $('#room_type').on('change', function() {
-           getRooms();
+            getRooms();
         });
 
 
         function getRooms() {
             $.ajax({
-                url: "{{route('room.getRooms')}}",
+                url: "{{ route('room.getRooms') }}",
                 method: 'GET',
                 data: {
                     room_type: $('#room_type').val(),

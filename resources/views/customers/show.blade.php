@@ -46,6 +46,14 @@
                                 <button type="submit" class="btn btn-sm btn-primary">View</a>
                             </form>
 
+                            <form class="d-inline me-1" action="{{ route('payment.create') }}" method="GET">
+                                @csrf
+                                @method('GET')
+                                <input type="hidden" name="booking_id" value="{{ $booking->id }}" />
+                                <input type="hidden" name="customer_id" value="{{ $booking->customer_id }}" />
+                                <button type="submit" class="btn btn-sm btn-primary">Payment</a>
+                            </form>
+
                             <form class="d-inline" action="{{ route('booking.edit') }}" method="GET">
 
                                 <input type="hidden" name="id" value="{{ $booking->id }}" />
