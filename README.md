@@ -71,6 +71,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 Report based on Gender
 Report based on age
 report bazsed on booking status
+want set the downlaod/stream option to dowblaod pdf
 
 
 hello

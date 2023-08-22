@@ -75,50 +75,61 @@ class BookingController extends Controller
     }
 
     function store(Request $request){
-        // return $request;
-        $validated = $request->validate([
-            'payment_method' => 'required',
-            ]);
-        $bookingData=Session::get('booking');
-        $user=Session::get('user');
-        // return $bookingData;
-        $booking = new Booking;
-        $booking->booking_date = $bookingData['booking_date'];
-        $booking->check_in_date = $bookingData['check_in_date'];
-        $booking->check_out_date = $bookingData['check_out_date'];
-        $booking->check_in_time = $bookingData['check_in_time'];
-        $booking->check_out_time = $bookingData['check_out_time'];
-        $booking->no_of_adults = $bookingData['no_of_adults'];
-        $booking->no_of_childrens = $bookingData['no_of_childrens'];
-        $booking->status = 'booked';
-        $booking->customer_id = $bookingData['customer_id'];
-        $booking->save();
-
-        $obj=Room::whereIn('id',$bookingData['rooms'])
-        ->update(['is_occupied'=>'Yes']);
-
-        foreach($bookingData['rooms'] as $room){
-            $booking->rooms()->attach($room);
+        if(session()->has('booking')){
+            $bookingData=Session::get('booking');
+            $validated = $request->validate([
+                'payment_method' => 'required',
+                ]);
+            $user=Session::get('user');
+            // return $bookingData;
+            $booking = new Booking;
+            $booking->booking_date = $bookingData['booking_date'];
+            $booking->check_in_date = $bookingData['check_in_date'];
+            $booking->check_out_date = $bookingData['check_out_date'];
+            $booking->check_in_time = $bookingData['check_in_time'];
+            $booking->check_out_time = $bookingData['check_out_time'];
+            $booking->no_of_adults = $bookingData['no_of_adults'];
+            $booking->no_of_childrens = $bookingData['no_of_childrens'];
+            $booking->status = 'booked';
+            $booking->customer_id = $bookingData['customer_id'];
+            $booking->save();
+    
+            $obj=Room::whereIn('id',$bookingData['rooms'])
+            ->update(['is_occupied'=>'Yes']);
+    
+            foreach($bookingData['rooms'] as $room){
+                $booking->rooms()->attach($room);
+            }
+            // To send message
+            $phone_no = $booking->customer->phone_no;
+            $msg='Dear'.' '.$booking->customer->lname.
+            'You have booked the below mentioned rooms with us,thank you, '.'Room_no'.$bookingData['room_no'];
+    
+            // Common::message($phone_no,$msg);
+    
+            // store Payment 
+            $payment = new Payment;
+            $payment->amount=$bookingData['total'];
+            $payment->method_of_payment	=$request->payment_method;
+            $payment->status='Not Paid';
+            $payment->customer_id=$bookingData['customer_id'];
+            $payment->booking_id=$booking->id;
+            $payment->save();
+    
+            $pdf = Pdf::loadView('payment.receipt',['bookingData'=>$bookingData],['user'=>$user]);
+            session()->forget('booking');
+            return $pdf->download('document.pdf');
         }
-        // To send message
-        $phone_no = $booking->customer->phone_no;
-        $msg='Dear'.' '.$booking->customer->lname.
-        'You have booked the below mentioned rooms with us,thank you, '.'Room_no'.$bookingData['room_no'];
-
-        // Common::message($phone_no,$msg);
-
-        // store Payment 
-        $payment = new Payment;
-        $payment->amount=$bookingData['total'];
-        $payment->method_of_payment	=$request->payment_method;
-        $payment->status='Not Paid';
-        $payment->customer_id=$bookingData['customer_id'];
-        $payment->booking_id=$booking->id;
-        $payment->save();
-
-        $pdf = Pdf::loadView('payment.receipt',['bookingData'=>$bookingData],['user'=>$user]);
-        return $pdf->stream('document.pdf');
-        return redirect()->to('/customers/show?id='.$bookingData['customer_id']);
+        else{
+            if(session()->get('user')['user_type']=='admin'){
+                return redirect()->to('/customers/show?id='.session()->get('user')['real_name']->id);
+            }
+            else{
+                return redirect()->to('bookings/cutomer-booking');
+            }
+            
+        }
+        
     }
     function getRooms(Request $request){
         // return $request;

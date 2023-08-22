@@ -50,6 +50,10 @@
             <td>{{$bookingData['room_no']}}</td>
         </tr>
     </table>
+    <p>To pay via the bank use below information </p>
+    <p>Bank: Bank of Ceylon</p>
+    <p>Branch: Paranthan</p>
+    <p>Name: RJ Mahaal hotel</p>
     <p>
         <center>Thank you for booking with us</center>
     </p>

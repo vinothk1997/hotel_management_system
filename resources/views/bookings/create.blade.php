@@ -45,7 +45,7 @@
                         <label>Date of Arival:</label>
                         <input type="date" name="arival_date" id="arival_date" onkeypress="return isTextKey(event)"
                             class="form-control @error('arival_date') is-invalid @enderror"
-                            value="{{ old('arival_date') }}">
+                            value="{{ old('arival_date') }}"  min="{{ date('Y-m-d') }}">
                         @error('arival_date')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -56,7 +56,7 @@
                         <label>Date of Departure:</label>
                         <input type="date" name="departure_date" id="departure_date"
                             class="form-control @error('departure_date') is-invalid @enderror"
-                            value="{{ old('departure_date') }}">
+                            value="{{ old('departure_date') }}" min="{{ date('Y-m-d') }}">
                         @error('departure_date')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
