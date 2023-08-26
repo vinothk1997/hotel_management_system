@@ -15,7 +15,7 @@
 
             <!-- Top Text -->
             <div class="page-header-container">
-                <h2 class="page-header">Star Hotel Rooms</h2>
+                <h2 class="page-header">RJ Mahaal Hotel Rooms</h2>
                 <hr />
                 <p class="page-sub-header">
                     Get the most of our hotel specials. Enjoy the modern <br>
