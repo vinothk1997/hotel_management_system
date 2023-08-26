@@ -36,7 +36,7 @@
                     >
                 </li>
                 <li class="header-nav-list">
-                    <a class="header-btn header-btn-custom" href="https://timbu.com/search?query=hotel">BOOK NOW</a>
+                    <a class="header-btn header-btn-custom" href="{{route('auth.index')}}">BOOK NOW</a>
                 </li>
             </ul>
 

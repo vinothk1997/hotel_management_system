@@ -32,9 +32,9 @@
             <h2 class="jumbotron-header">Discover the perfect balance <br> of hospitality, luxury and <br>comfort.</h2>
             <p>We are focused on providing clients with the highest level<br>
                 of comfort and excellent affordable rates</p>
-            <a href="https://timbu.com/search?query=hotel" class="btn btn-fill btn-large">Book Now</a>
+            <a href={{route('auth.index')}} class="btn btn-fill btn-large">Book Now</a>
         </div>
-        <div class="jumbotron-right">
+        {{-- <div class="jumbotron-right">
             <form action="" class="jumbotron-form">
                 <!-- Put the form here -->
                 <h3>Scared you can't afford it?</h3><br>
@@ -51,7 +51,7 @@
                 <input type="text" id="children" name="children" placeholder="Children"><br>
                 <button type="button" class="rates">CHECK RATES</button>
             </form>
-        </div>
+        </div> --}}
     </div>
 
     <!-- Enjoy your stay in our hotel -->
@@ -154,7 +154,7 @@
                         </div>
                     </li>
                 </ul>
-                <a href="{{ route('bookings.create') }}" class="btn btn-fill btn-large centered">Book Now</a>
+                <a href="{{ route('auth.index') }}" class="btn btn-fill btn-large centered">Book Now</a>
             </div>
         </div>
     </section>

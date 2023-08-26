@@ -10,14 +10,14 @@
                 <p class="footer-description-detail"> 
                     <img src="./assets/img/map-pin.svg" class="footer-description-icon" alt="star hotel location">
 
-                    <span>23, Fola Osibo, Lekki Phase 1</span></p>
+                    <span>Paranthan, Kilinochchi</span></p>
                 <p class="footer-description-detail">
                     <img src="./assets/img/phone.svg" class="footer-description-icon" alt="star hotels phone number"> 
                     <span>
-                 08185956620</span></p>
+                 0775858522</span></p>
                 <p class="footer-description-detail">
                     <img src="./assets/img/mail.svg" class="footer-description-icon" alt="star hotels email">
-                    <span>support@starhotels.com</span> </p>
+                    <span>support@rjmahaal.com</span> </p>
             </div>
             <div class="footer-follow-us">
                 <h3 class="footer-description-title">Follow Us</h3>
