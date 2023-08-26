@@ -105,7 +105,7 @@ class BookingController extends Controller
             $msg='Dear'.' '.$booking->customer->lname.
             'You have booked the below mentioned rooms with us,thank you, '.'Room_no'.$bookingData['room_no'];
     
-            // Common::message($phone_no,$msg);
+            Common::message($phone_no,$msg);
     
             // store Payment 
             $payment = new Payment;
