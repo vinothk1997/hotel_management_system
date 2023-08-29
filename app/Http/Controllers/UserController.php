@@ -57,7 +57,7 @@ class UserController extends Controller
                             return view('dashboard');
                         }
                         else{
-                            return redirect()->route('booking.index');
+                            return redirect()->to('/bookings/cutomer-booking');
                         }
                     }
                     else{
