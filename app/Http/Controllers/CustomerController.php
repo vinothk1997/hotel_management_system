@@ -63,7 +63,13 @@ class CustomerController extends Controller
         $user->attempt='0';
         $user->status='active';
         $user->save();
-        return redirect()->to('/');
+
+        if(session()->has('user')){
+            return redirect()->to('/customers');
+        }
+        else{
+            return redirect()->to('/');
+        }
         
     }
 

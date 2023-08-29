@@ -27,13 +27,13 @@
                         <input type="hidden" name="room_type_id" value="{{$roomType->id}}" />
                         <button type="submit" class="btn btn-sm btn-secondary mx-2">Edit</a>
                     </form>
-                    <form class="d-inline" action="" method="POST">
+                    {{-- <form class="d-inline" action="" method="POST">
                         @csrf
                         @method('DELETE')
                         <input type="hidden" name="room_type_id" value="{{$roomType->id}}">
                          <button type="submit" onclick="return deletedata()"
                             class="btn btn-sm btn-danger">Delete</a>
-                    </form>
+                    </form> --}}
                 </td>
             </tr>
             @endforeach

@@ -46,6 +46,7 @@
                                 <button type="submit" class="btn btn-sm btn-primary">View</a>
                             </form>
 
+                            @if($booking->status =='booked')
                             <form class="d-inline me-1" action="{{ route('payment.create') }}" method="GET">
                                 @csrf
                                 @method('GET')
@@ -53,13 +54,12 @@
                                 <input type="hidden" name="customer_id" value="{{ $booking->customer_id }}" />
                                 <button type="submit" class="btn btn-sm btn-primary">Payment</a>
                             </form>
-
                             <form class="d-inline" action="{{ route('booking.edit') }}" method="GET">
 
                                 <input type="hidden" name="id" value="{{ $booking->id }}" />
                                 <button type="submit" class="btn btn-sm btn-secondary mx-2">Edit</a>
                             </form>
-
+                            
                             <form class="d-inline" action="{{ route('booking.checkout') }}" method="GET">
 
                                 <input type="hidden" name="id" value="{{ $booking->id }}" />
@@ -69,6 +69,7 @@
                                 <input type="hidden" name="id" value="{{ $booking->id }}">
                                 <button type="submit" class="btn btn-sm btn-danger">Cancel</a>
                             </form>
+                            @endif
                         </td>
                         @else
                         <td>No Action</td>

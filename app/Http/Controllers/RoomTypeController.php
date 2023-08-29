@@ -19,6 +19,10 @@ class RoomTypeController extends Controller
     }
 
     function store(Request $request){
+
+        $validated = $request->validate([
+            'room_type' => 'required|unique:room_types,type',
+        ]);
         $roomType = new RoomType;
         $roomType->type=$request->room_type;
         $roomType->save();

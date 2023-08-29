@@ -21,7 +21,7 @@
                         <select name="status" class="form-control">
                             <option value="">Select Payment Status</option>
                             <option value="partially_paid">Partially Paid</option>
-                            <option value="fully_paid">Partially Paid</option>
+                            <option value="fully_paid">fully Paid</option>
                         </select>
                     </div>
                 </div>

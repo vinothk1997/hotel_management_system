@@ -46,7 +46,7 @@ class BookingController extends Controller
         $departureDate = Carbon::parse($request->departure_date);
         $numberOfDays = $arrivalDate->diffInDays($departureDate);
         $total = $total_per_day*$numberOfDays;
-        // return $total_per_day;
+        // return $total;
         $room_no =Room::whereIn('id',$request->room!=null?$request->room:[])->pluck('room_no')->implode(',');
         $no_of_rooms=collect($request->room)->count();
         $no_of_adults = $request->no_of_adults??0;
@@ -118,7 +118,7 @@ class BookingController extends Controller
     
             $pdf = Pdf::loadView('payment.receipt',['bookingData'=>$bookingData],['user'=>$user]);
             session()->forget('booking');
-            return $pdf->download('document.pdf');
+            return $pdf->download('receipt.pdf');
         }
         else{
             if(session()->get('user')['user_type']=='admin'){
@@ -194,7 +194,7 @@ class BookingController extends Controller
 
     function cancelBooking(Request $request){
         $booking = Booking::find($request->id);
-        if(Carbon::today()<$booking->check_in_date){
+        if(Carbon::today()<$booking->check_in_date ){
             $booking->status = 'Cancelled';
             $booking->save();
             
@@ -224,6 +224,8 @@ class BookingController extends Controller
         ->update([
             'is_occupied'=>'No',
         ]);
+
+        return redirect()->back();
 
     }
 
