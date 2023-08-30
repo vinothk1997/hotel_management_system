@@ -172,7 +172,7 @@ class UserController extends Controller
                 $user =User::where('id',$req->user_name)->first();
                 $user->password=Hash::make($newPassword);
                 $user->save();
-                session()->flush();
+                session()->pull('user');
                 return view('auth.login',['changed'=>"changed password"]);
             }
             else{
