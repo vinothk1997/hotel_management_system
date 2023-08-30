@@ -158,9 +158,7 @@
                 },
             });
         }
-
-       
-
+        
          // Revenue Daata
          $.ajax({
             url: '/dashboard/generateRevenueGraph',

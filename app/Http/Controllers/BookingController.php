@@ -105,7 +105,7 @@ class BookingController extends Controller
             $msg='Dear'.' '.$booking->customer->lname.
             'You have booked the below mentioned rooms with us,thank you, '.'Room_no'.$bookingData['room_no'];
     
-            Common::message($phone_no,$msg);
+            // Common::message($phone_no,$msg);
     
             // store Payment 
             $payment = new Payment;
@@ -116,9 +116,9 @@ class BookingController extends Controller
             $payment->booking_id=$booking->id;
             $payment->save();
     
-            $pdf = Pdf::loadView('payment.receipt',['bookingData'=>$bookingData],['user'=>$user]);
+            $pdf = Pdf::loadView('payment.receipt',['bookingData'=>$bookingData,'user'=>$user]);
             session()->forget('booking');
-            return $pdf->download('receipt.pdf');
+            return $pdf->download('receipt.pdf')->header('Content-Type','application/pdf');
         }
         else{
             if(session()->get('user')['user_type']=='admin'){
