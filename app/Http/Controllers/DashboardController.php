@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Booking;
+use App\Models\Payment;
 use Carbon\Carbon;
 
 
@@ -51,7 +52,7 @@ class DashboardController extends Controller
 
     function generateMonthlyGraph()
     {
-        $year = 2023;
+        $year=Carbon::now()->year;
         $monthlyData = Booking::whereYear('booking_date', $year)
                               ->orderBy('booking_date')
                               ->get()
@@ -64,5 +65,21 @@ class DashboardController extends Controller
                               });
     
         return $monthlyData;
+    }
+
+    function generateRevenueGraph(){
+        $year=Carbon::now()->year;
+        $monthlyData=Payment::whereYear('created_at',$year)
+        ->orderBy('created_at')
+        ->get()
+        ->groupBy(function ($item) {
+            return Carbon::parse($item->created_at)->format('F');
+            
+        })
+        ->map(function ($group) {
+            return $group->sum('amount');
+        });
+        return $monthlyData;
+
     }
 }

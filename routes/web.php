@@ -139,6 +139,7 @@ Route::group(['prefix' =>'dashboard'],function(){
     Route::get('/genderBasedGraph',[DashboardController::class,'genderBasedGraph'])->name('dashboard.genderBasedGraph');
     Route::get('/DOBBasedGraph',[DashboardController::class,'DOBBasedGraph'])->name('dashboard.DOBBasedGraph');
     Route::get('/generateMonthlyGraph',[DashboardController::class,'generateMonthlyGraph'])->name('dashboard.generateMonthlyGraph');
+    Route::get('/generateRevenueGraph',[DashboardController::class,'generateRevenueGraph'])->name('dashboard.generateRevenueGraph');
 
 });
 

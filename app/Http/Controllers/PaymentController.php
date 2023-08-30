@@ -32,7 +32,7 @@ class PaymentController extends Controller
             $status = $request->status;
             $method_of_payment = $request->method_of_payment;
 
-            $checkRecord = Payment::get();
+            $checkRecord = Payment::where('booking_id',$booking_id)->get();
             if($checkRecord->count()==1 && $checkRecord->first()->status=='Not Paid'){
                 $payment = Payment::where('booking_id',$booking_id)
                 ->where('customer_id',$customer_id)
@@ -57,5 +57,7 @@ class PaymentController extends Controller
                 $payment->save();
             
             }
+
+            return redirect()->back();
      }
 }

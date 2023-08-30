@@ -19,27 +19,7 @@
         </div>
         <div class="col-6 border mt-5">
             <div>
-                <canvas id="myChart4"></canvas>
-            </div>
-        </div>
-        <div class="col-6 border mt-5">
-            <div>
-                <canvas id="myChart5"></canvas>
-            </div>
-        </div>
-        <div class="col-6 border mt-5">
-            <div>
-                <canvas id="myChart6"></canvas>
-            </div>
-        </div>
-        <div class="col-6 border mt-5">
-            <div>
-                <canvas id="myChart7"></canvas>
-            </div>
-        </div>
-        <div class="col-6 border mt-5">
-            <div>
-                <canvas id="myChart8"></canvas>
+                <canvas id="income"></canvas>
             </div>
         </div>
     </div>
@@ -179,30 +159,35 @@
             });
         }
 
-        // Male Female Leadership
-        $.ajax({
-            url: '/dashboard/generateMaleFemaleLeardershipBasisGraph',
+       
+
+         // Revenue Daata
+         $.ajax({
+            url: '/dashboard/generateRevenueGraph',
             type: 'GET',
             success: function(data) {
                 console.log(data);
                 // Call the function to create the chart with the received data
-                generateMaleFemaleLeardershipBasisGraph(data);
+                generatRevenueGraph(data);
             },
             error: function(xhr, status, error) {
                 console.error(error);
             }
         });
 
-        function generateMaleFemaleLeardershipBasisGraph(data) {
-            const ctx = document.getElementById('myChart4');
+        function generatRevenueGraph(data) {
+            const ctx = document.getElementById('income');
 
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['male', 'female'],
+                    labels:['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
-                        label: 'Male Female Leadership Distribution',
-                        data: [data.male, data.female],
+                        label: 'Income',
+                        data: [data.January, data.February, data.March, data.April, data.May, data.June,
+                            data.July,
+                            data.August, data.September, data.October, data.November, data.December
+                        ],
                         borderWidth: 1,
                         backgroundColor: 'blue'
 
@@ -213,175 +198,7 @@
                         yAxes: [{
                             ticks: {
                                 beginAtZero: true,
-                                stepSize: 1 // Increase the y-axis scale by 2
-                            }
-                        }]
-                    }
-                },
-            });
-        }
-
-        // Occupation Wise Daata
-        $.ajax({
-            url: '/dashboard/generateOcupationWiseGraph',
-            type: 'GET',
-            success: function(data) {
-                console.log(data);
-                // Call the function to create the chart with the received data
-                generateOcupationWiseGraph(data);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-
-        function generateOcupationWiseGraph(data) {
-            const ctx = document.getElementById('myChart5');
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.keys,
-                    datasets: [{
-                        label: 'Occupation Distribution',
-                        data: data.values,
-                        borderWidth: 1,
-                        backgroundColor: 'blue'
-
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                stepSize: 1 // Increase the y-axis scale by 2
-                            }
-                        }]
-                    }
-                },
-            });
-        }
-
-
-        // Education  Wise Daata
-        $.ajax({
-            url: '/dashboard/generateEducationWiseGraph',
-            type: 'GET',
-            success: function(data) {
-                console.log(data);
-                // Call the function to create the chart with the received data
-                generateEducationWiseGraph(data);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-
-        function generateEducationWiseGraph(data) {
-            const ctx = document.getElementById('myChart6');
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.keys,
-                    datasets: [{
-                        label: 'Education Distribution',
-                        data: data.values,
-                        borderWidth: 1,
-                        backgroundColor: 'blue'
-
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                stepSize: 1 // Increase the y-axis scale by 2
-                            }
-                        }]
-                    }
-                },
-            });
-        }
-
-        // Religion  Wise Daata
-        $.ajax({
-            url: '/dashboard/generateReligionWiseGraph',
-            type: 'GET',
-            success: function(data) {
-                console.log(data);
-                // Call the function to create the chart with the received data
-                generateReligionWiseGraph(data);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-
-        function generateReligionWiseGraph(data) {
-            const ctx = document.getElementById('myChart7');
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.keys,
-                    datasets: [{
-                        label: 'Religion Distribution',
-                        data: data.values,
-                        borderWidth: 1,
-                        backgroundColor: 'blue'
-
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                stepSize: 1 // Increase the y-axis scale by 2
-                            }
-                        }]
-                    }
-                },
-            });
-        }
-        // Ethnic  Wise Daata
-        $.ajax({
-            url: '/dashboard/generateEthnicWiseGraph',
-            type: 'GET',
-            success: function(data) {
-                console.log(data);
-                // Call the function to create the chart with the received data
-                generateEthnicWiseGraph(data);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-
-        function generateEthnicWiseGraph(data) {
-            const ctx = document.getElementById('myChart8');
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.keys,
-                    datasets: [{
-                        label: 'Ethnic Distribution',
-                        data: data.values,
-                        borderWidth: 1,
-                        backgroundColor: 'blue'
-
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                stepSize: 1 // Increase the y-axis scale by 2
+                                stepSize: 1000 // Increase the y-axis scale by 2
                             }
                         }],
                     }
